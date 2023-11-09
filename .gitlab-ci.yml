@@ -2,7 +2,7 @@
 # https://docs.gitlab.com/ee/development/cicd/templates.html
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
-
+- checkout: self
 image:
   name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
 
