@@ -1,3 +1,5 @@
+- bash: ls $(terraform-working-directory)
+
 terraform {
     backend "azurerm" {
     resource_group_name   = "tstate-rg"
