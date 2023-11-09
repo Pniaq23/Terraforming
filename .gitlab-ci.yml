@@ -1,0 +1,51 @@
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Terraform.gitlab-ci.yml
+
+image:
+  name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+
+stages:
+  - init
+  - validate
+  - build
+  - deploy
+
+init:
+  stage: init
+  artifacts:
+    untracked: true
+  script:
+  - terraform init
+
+validate:
+  stage: validate
+  artifacts:
+    untracked: true
+  dependencies:
+    - init
+  script:
+  - terraform validate
+
+build:
+  stage: build
+  dependencies:
+    - validate
+  script:
+  - terraform plan -out plan
+  artifacts:
+    untracked: true
+    paths:
+    - "${TF_ROOT}/plan"
+    reports:
+      terraform: "${TF_ROOT}/plan"
+
+deploy:
+  stage: deploy
+  script:
+
+  - terraform apply --auto-approve plan
+  when: manual
+  dependencies:
+    - build
